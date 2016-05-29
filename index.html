@@ -5,7 +5,6 @@
 
 <body style='margin: 0px; background-color: #bbbbbb; overflow: hidden;'>
     <script>
-    var camera, scene, renderer;
     var geometry, material, mesh;
 
     var speedX = 0.01;
@@ -25,9 +24,11 @@
         scene = new THREE.Scene();
 
         geometry = new THREE.IcosahedronGeometry(100, 1);
+        //geometry = new THREE.BoxGeometry(100,100,100,2,2,2);
         material = new THREE.MeshLambertMaterial({
             color: 0xffffff,
-            shading: THREE.FlatShading
+            shading: THREE.FlatShading,
+            wireframe: true
         });
 
         for (var i = 0; i < geometry.vertices.length; i++) {
@@ -46,26 +47,38 @@
 
         requestAnimationFrame(animate);
 
-        mesh.rotation.x += speedX;
-        mesh.rotation.y += speedY;
+        mesh.rotation.x += parent.volume * 0.0003;
+        mesh.rotation.y += parent.volume * 0.0001;
 
         if (parent.streamData.length > geometry.vertices.length) {
             for (var i = 0; i < parent.streamData.length; i += Math.floor(parent.streamData.length / geometry.vertices.length)) {
                 //geometry.vertices[i].x = orVertices[i].x;
                 if (geometry.vertices[i]) {
-                    geometry.vertices[i].x = orVertices[i].x * (parent.streamData[i] / 1 + 1);
-                    geometry.vertices[i].y = orVertices[i].y * (parent.streamData[i] / 1 + 1);
-                    geometry.vertices[i].z = orVertices[i].z * (parent.streamData[i] / 1 + 1);
+                    geometry.vertices[i].x = orVertices[i].x * (parent.streamData[i] / 200 + 1);
+                    geometry.vertices[i].y = orVertices[i].y * (parent.streamData[i] / 200 + 1);
+                    geometry.vertices[i].z = orVertices[i].z * (parent.streamData[i] / 200 + 1);
                 }
             }
         } else {
-
+            for (var i = 0; i < geometry.vertices.length; i += Math.floor(geometry.vertices.length / parent.streamData.length)) {
+                //geometry.vertices[i].x = orVertices[i].x;
+                if (geometry.vertices[i] && parent.streamData[i]) {
+                    geometry.vertices[i].x = orVertices[i].x * (parent.streamData[i] / 100 + 1);
+                    geometry.vertices[i].y = orVertices[i].y * (parent.streamData[i] / 100 + 1);
+                    geometry.vertices[i].z = orVertices[i].z * (parent.streamData[i] / 100 + 1);
+                }
+            }
         }
+
+        geometry.verticesNeedUpdate = true;
+
+
 
         var scale = (parent.volume / 255) + 1;
         mesh.scale.set(scale, scale, scale);
 
         renderer.render(scene, camera);
+
 
     }
 
