@@ -5,12 +5,15 @@
 
 <body style='margin: 0px; background-color: #bbbbbb; overflow: hidden;'>
     <script>
+    var camera, scene, renderer;
     var geometry, material, mesh;
 
     var speedX = 0.01;
     var speedY = 0.01;
 
     var orVertices = [];
+
+    var light2, light3;
 
     var init = function() {
 
@@ -28,7 +31,7 @@
         material = new THREE.MeshLambertMaterial({
             color: 0xffffff,
             shading: THREE.FlatShading,
-            wireframe: true
+            wireframe: false
         });
 
         for (var i = 0; i < geometry.vertices.length; i++) {
@@ -40,6 +43,16 @@
 
         var light = new THREE.HemisphereLight(0xffffff, 0x010101, 1);
         scene.add(light);
+
+        light2 = new THREE.PointLight(0xff0000, 1);
+        light2.position.x = -1000;
+        light2.position.y = -1000;
+        scene.add(light2);
+
+        light3 = new THREE.PointLight(0x00ff00, 1);
+        light3.position.x = -1000;
+        light3.position.y = -1000;
+        scene.add(light3);
 
     }
 
@@ -71,6 +84,13 @@
         }
 
         geometry.verticesNeedUpdate = true;
+        light2.position.x = Math.sin(Date.now() * 0.001) * 1000;
+        light2.position.y = Math.sin(Date.now() * 0.001) * 1000;
+        light2.position.z = Math.sin(Date.now() * 0.001) * 1000;
+
+        light3.position.x = Math.sin(Date.now() * 0.002 + 2.2) * 1000;
+        light3.position.y = Math.sin(Date.now() * 0.002 + 2.2) * 1000;
+        light3.position.z = Math.sin(Date.now() * 0.002 + 2.2) * 1000;
 
 
 
