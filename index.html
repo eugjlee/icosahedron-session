@@ -15,6 +15,9 @@
 
     var light2, light3;
 
+    var materials = [];
+    var currMaterial = 0;
+
     var init = function() {
 
         renderer = new THREE.WebGLRenderer();
@@ -33,6 +36,13 @@
             shading: THREE.FlatShading,
             wireframe: false
         });
+
+        materials.push(material);
+        materials.push(new THREE.MeshLambertMaterial({
+            color: 0xffffff,
+            shading: THREE.FlatShading,
+            wireframe: true
+        }));
 
         for (var i = 0; i < geometry.vertices.length; i++) {
             orVertices.push(geometry.vertices[i].clone());
@@ -81,6 +91,15 @@
                     geometry.vertices[i].z = orVertices[i].z * (parent.streamData[i] / 100 + 1);
                 }
             }
+        }
+
+        if (parent.volume > 100 && Math.random() > 0.5) {
+            currMaterial++;
+            if (currMaterial >= materials.length) {
+                currMaterial = 0;
+            }
+
+            mesh.material = materials[currMaterial];
         }
 
         geometry.verticesNeedUpdate = true;
