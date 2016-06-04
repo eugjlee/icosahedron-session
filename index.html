@@ -58,6 +58,7 @@
         meshes.push(mesh);
         meshes.push(new THREE.Mesh(geometry2, material));
         meshes.push(new THREE.Mesh(geometry3, material));
+        //meshes.push(new THREE.Mesh(new THREE.TorusKnotGeometry( 100, 10, 4, 4 ),material));
 
         var light = new THREE.HemisphereLight(0xffffff, 0x010101, 1);
         scene.add(light);
