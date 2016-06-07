@@ -1,3 +1,3 @@
 # ICOSAHEDRON SESSION
 
-###### In Progress
+###### An experiment to animate an object created with THREE JS, which animates with music. 
